@@ -29,9 +29,10 @@ public class FileProcessor implements FileProcessorComponent {
 
     /**
      * Constructor to solve spread challenge of similar type (e.g. weather and football challenge).
-     * @param fileContent the file containing the data to be processed
-     * @param outputColumn name of the column which should be returned as result
-     * @param minuendColumn name of the first column for absolute difference calculation
+     *
+     * @param fileContent       the file containing the data to be processed
+     * @param outputColumn      name of the column which should be returned as result
+     * @param minuendColumn     name of the first column for absolute difference calculation
      * @param subtractiveColumn name of the second column for absolute difference calculation
      */
     public FileProcessor(List<List<String>> fileContent, String outputColumn, String minuendColumn, String subtractiveColumn) {
@@ -68,7 +69,27 @@ public class FileProcessor implements FileProcessorComponent {
      */
     @Override
     public void processFileData(List<List<String>> fileContent) {
+        List<String> firstRow = fileContent.get(0);
+        if (columnExists(firstRow, outputColumn) && columnExists(firstRow, minuendColumn) && columnExists(firstRow, subtractiveColumn)) {
+            // determine column indices
+            int outputIndex = firstRow.indexOf(outputColumn);
+            int minuendIndex = firstRow.indexOf(minuendColumn);
+            int subtractiveIndex = firstRow.indexOf(subtractiveColumn);
 
+            // create file object representatives
+            for (List<String> data :
+                    fileContent) {
+                if (fileContent.indexOf(data) != 0) {
+                    generateFileObjectRepresentative(data, outputIndex, minuendIndex, subtractiveIndex);
+                }
+            }
+
+            if (fileContent.size() - 1 > fileObjectRepresentativeList.size()) {
+                System.out.println("Not all file data could be processed, please check your input.");
+            }
+        } else {
+            System.out.println("A column name does not exist in your file, please check your input.");
+        }
     }
 
     /**
@@ -97,5 +118,25 @@ public class FileProcessor implements FileProcessorComponent {
      */
     public boolean columnExists(List<String> row, String column) {
         return row.indexOf(column) != -1;
+    }
+
+    /**
+     * Generates an object representative for a given file row.
+     *
+     * @param data             file row content as list
+     * @param outputIndex      index of column which should be returned as result
+     * @param minuendIndex     index of the first column for absolute difference calculation
+     * @param subtractiveIndex index of the second column for absolute difference calculation
+     */
+    public void generateFileObjectRepresentative(List<String> data, int outputIndex, int minuendIndex, int subtractiveIndex) {
+        String outputValue = data.get(outputIndex);
+        int minuendValue, subtractiveValue;
+        try {
+            minuendValue = Integer.parseInt(data.get(minuendIndex));
+            subtractiveValue = Integer.parseInt(data.get(subtractiveIndex));
+            fileObjectRepresentativeList.add(new FileObjectRepresentative(outputValue, minuendValue, subtractiveValue));
+        } catch (NumberFormatException e) {
+            System.out.println("The file contained a non number format, please check your file.");
+        }
     }
 }
