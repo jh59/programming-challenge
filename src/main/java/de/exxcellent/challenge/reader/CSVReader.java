@@ -16,6 +16,7 @@ public class CSVReader implements FileReaderComponent {
 
     /**
      * Reads a .csv file and returns its content.
+     *
      * @param filePath the file path
      * @return the files content as list
      */
@@ -23,16 +24,16 @@ public class CSVReader implements FileReaderComponent {
     public List<List<String>> readFile(String filePath) {
         List<List<String>> fileContent = new ArrayList<>();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
-            while((line = br.readLine()) != null){
+            while ((line = br.readLine()) != null) {
                 String[] columnValues = line.split(",");
                 fileContent.add(Arrays.asList(columnValues));
             }
         } catch (IOException e) {
             System.out.println("Invalid or non existent file.");
         }
-        if(!fileIsValid(fileContent)){
+        if (!fileIsValid(fileContent)) {
             System.out.println("The file is not valid");
             return null;
         }
@@ -41,15 +42,16 @@ public class CSVReader implements FileReaderComponent {
 
     /**
      * Validate .csv file that each row has the same amount of columns.
+     *
      * @param fileContent the .csv content as list
      * @return true when the amount is always the same
      */
     @Override
     public boolean fileIsValid(List<List<String>> fileContent) {
         int amountOfColumns = fileContent.get(0).size();
-        for (List<String> row:
-             fileContent) {
-            if(amountOfColumns != row.size()){
+        for (List<String> row :
+                fileContent) {
+            if (amountOfColumns != row.size()) {
                 return false;
             }
         }
