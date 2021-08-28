@@ -97,4 +97,20 @@ class AppTest {
         && processedWeather.getMinTemp() == weather.getMinTemp()
         && processedWeather.getTempSpread() == weather.getTempSpread());
     }
+
+    @Test
+    void checkColumnExistenceForValidColumn(){
+        List<List<String>> fileContent = csvReader.readFile(pathOfExistingFile);
+        FileProcessor fileProcessor = new FileProcessor(fileContent, "Day", "MxT", "MnT");
+
+        Assertions.assertTrue(fileProcessor.columnExists(fileContent.get(0), "Day"));
+    }
+
+    @Test
+    void checkColumnExistenceForInvalidColumn(){
+        List<List<String>> fileContent = csvReader.readFile(pathOfExistingFile);
+        FileProcessor fileProcessor = new FileProcessor(fileContent, "Day", "MxT", "MnT");
+
+        Assertions.assertFalse(fileProcessor.columnExists(fileContent.get(0), "Dya"));
+    }
 }
