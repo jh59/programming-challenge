@@ -1,5 +1,7 @@
 package de.exxcellent.challenge;
 
+import de.exxcellent.challenge.processing.FileProcessor;
+import de.exxcellent.challenge.processing.Weather;
 import de.exxcellent.challenge.reader.CSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,5 +67,34 @@ class AppTest {
         invalidFileContent.add(Arrays.asList("1", "30"));
 
         Assertions.assertFalse(csvReader.fileIsValid(invalidFileContent));
+    }
+
+    // Test for Weather class.
+
+    @Test
+    void checkSmallestTemperatureSpread(){
+        List<Weather> weatherList = new ArrayList<>();
+        weatherList.add(new Weather(1,50,40));
+        weatherList.add(new Weather(2,50,45)); // object with the smallest temperature spread
+        weatherList.add(new Weather(3,50,10));
+
+        Collections.sort(weatherList);
+        assertEquals(2, weatherList.get(0).getDay());
+    }
+
+    // Test for FileProcessor class.
+
+    @Test
+    void checkFileProcessing(){
+        List<List<String>> fileContent = csvReader.readFile(pathOfExistingFile);
+        Weather weather = new Weather(1, 88, 59);
+        FileProcessor fileProcessor = new FileProcessor(fileContent);
+
+        Weather processedWeather = fileProcessor.getProcessedObjects().get(0);
+
+        Assertions.assertTrue(processedWeather.getDay() == weather.getDay()
+        && processedWeather.getMaxTemp() == weather.getMaxTemp()
+        && processedWeather.getMinTemp() == weather.getMinTemp()
+        && processedWeather.getTempSpread() == weather.getTempSpread());
     }
 }
