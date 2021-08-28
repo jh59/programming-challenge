@@ -18,12 +18,14 @@ public final class App {
 
         // Your preparation code …
         String pathWeatherFile = "src/main/resources/de/exxcellent/challenge/weather.csv";
-        Challenge weatherChallenge = new Challenge(pathWeatherFile);
+        String pathFootballFile = "src/main/resources/de/exxcellent/challenge/football.csv";
+        Challenge weatherChallenge = new Challenge(pathWeatherFile, "Day", "MxT", "MnT");
+        Challenge footballChallenge = new Challenge(pathFootballFile, "Team", "Goals", "Goals Allowed");
 
         String dayWithSmallestTempSpread = weatherChallenge.returnSmallestSpread();     // Your day analysis function call …
         System.out.printf("Day with smallest temperature spread : %s%n", dayWithSmallestTempSpread);
 
-        String teamWithSmallestGoalSpread = "A good team"; // Your goal analysis function call …
+        String teamWithSmallestGoalSpread = footballChallenge.returnSmallestSpread(); // Your goal analysis function call …
         System.out.printf("Team with smallest goal spread       : %s%n", teamWithSmallestGoalSpread);
     }
 }

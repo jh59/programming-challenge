@@ -1,7 +1,7 @@
 package de.exxcellent.challenge.resolution;
 
+import de.exxcellent.challenge.processing.FileObjectRepresentative;
 import de.exxcellent.challenge.processing.FileProcessor;
-import de.exxcellent.challenge.processing.Weather;
 import de.exxcellent.challenge.reader.CSVReader;
 
 import java.util.Collections;
@@ -16,24 +16,24 @@ public class Challenge {
 
     private FileProcessor fileProcessor;
 
-    public Challenge(String filePath) {
+    public Challenge(String filePath, String outputColumn, String minuendColumn, String subtractiveColumn) {
         CSVReader csvReader = new CSVReader();
         List<List<String>> fileContent = csvReader.readFile(filePath);
 
         if (fileContent != null) {
-            this.fileProcessor = new FileProcessor(fileContent);
+            this.fileProcessor = new FileProcessor(fileContent, outputColumn, minuendColumn, subtractiveColumn);
         }
     }
 
     /**
-     * Returns the day with the smallest value.
+     * Returns the column with the smallest spread value.
      *
-     * @return String of the day with the smallest value
+     * @return String of the column with the smallest value
      */
     public String returnSmallestSpread() {
-        List<Weather> processedObjects = this.fileProcessor.getProcessedObjects();
+        List<FileObjectRepresentative> processedObjects = this.fileProcessor.getFileObjectRepresentativeList();
 
         Collections.sort(processedObjects);
-        return String.valueOf(processedObjects.get(0).getDay());
+        return String.valueOf(processedObjects.get(0).getOutputValue());
     }
 }
