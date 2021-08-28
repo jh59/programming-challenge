@@ -1,5 +1,6 @@
 package de.exxcellent.challenge;
 
+import de.exxcellent.challenge.processing.FileObjectRepresentative;
 import de.exxcellent.challenge.processing.FileProcessor;
 import de.exxcellent.challenge.processing.Weather;
 import de.exxcellent.challenge.reader.CSVReader;
@@ -87,15 +88,15 @@ class AppTest {
     @Test
     void checkFileProcessing(){
         List<List<String>> fileContent = csvReader.readFile(pathOfExistingFile);
-        Weather weather = new Weather(1, 88, 59);
-        FileProcessor fileProcessor = new FileProcessor(fileContent);
+        FileObjectRepresentative fileObject = new FileObjectRepresentative("1", 88, 59);
+        FileProcessor fileProcessor = new FileProcessor(fileContent, "Day", "MxT", "MnT");
 
-        Weather processedWeather = fileProcessor.getProcessedObjects().get(0);
+        FileObjectRepresentative processedFileObject = fileProcessor.getFileObjectRepresentativeList().get(0);
 
-        Assertions.assertTrue(processedWeather.getDay() == weather.getDay()
-        && processedWeather.getMaxTemp() == weather.getMaxTemp()
-        && processedWeather.getMinTemp() == weather.getMinTemp()
-        && processedWeather.getTempSpread() == weather.getTempSpread());
+        Assertions.assertTrue(processedFileObject.getOutputValue().equals(fileObject.getOutputValue())
+        && processedFileObject.getMinuendValue() == fileObject.getMinuendValue()
+        && processedFileObject.getSubtractiveValue() == fileObject.getSubtractiveValue()
+        && processedFileObject.getAbsoluteDifference() == fileObject.getAbsoluteDifference());
     }
 
     @Test

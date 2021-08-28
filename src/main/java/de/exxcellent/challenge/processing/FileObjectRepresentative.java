@@ -22,6 +22,18 @@ public class FileObjectRepresentative implements Comparable {
         return outputValue;
     }
 
+    public int getMinuendValue() {
+        return minuendValue;
+    }
+
+    public int getSubtractiveValue() {
+        return subtractiveValue;
+    }
+
+    public int getAbsoluteDifference() {
+        return absoluteDifference;
+    }
+
     @Override
     public int compareTo(Object o) {
         FileObjectRepresentative other = (FileObjectRepresentative) o;

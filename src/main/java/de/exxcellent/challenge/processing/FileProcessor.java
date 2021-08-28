@@ -9,23 +9,11 @@ import java.util.List;
  * @author Jessica Hohn
  */
 public class FileProcessor implements FileProcessorComponent {
-    private List<Weather> processedObjects;
-
     // needed for generalized processing
     private List<FileObjectRepresentative> fileObjectRepresentativeList;
     private String outputColumn;
     private String minuendColumn;
     private String subtractiveColumn;
-
-    /**
-     * Constructor for only solving the weather challenge.
-     *
-     * @param weatherData file content
-     */
-    public FileProcessor(List<List<String>> weatherData) {
-        processedObjects = new ArrayList<>();
-        processWeatherData(weatherData);
-    }
 
     /**
      * Constructor to solve spread challenge of similar type (e.g. weather and football challenge).
@@ -42,15 +30,6 @@ public class FileProcessor implements FileProcessorComponent {
 
         fileObjectRepresentativeList = new ArrayList<>();
         processFileData(fileContent);
-    }
-
-    /**
-     * Getter for list of generated Weather objects
-     *
-     * @return list with Weather objects
-     */
-    public List<Weather> getProcessedObjects() {
-        return processedObjects;
     }
 
     /**
@@ -89,23 +68,6 @@ public class FileProcessor implements FileProcessorComponent {
             }
         } else {
             System.out.println("A column name does not exist in your file, please check your input.");
-        }
-    }
-
-    /**
-     * Process the weather files content to a list of Weather objects.
-     *
-     * @param fileContent file content as a list of objects
-     */
-    public void processWeatherData(List<List<String>> fileContent) {
-        for (List<String> data :
-                fileContent) {
-            if (fileContent.indexOf(data) != 0) {
-                int day = Integer.parseInt(data.get(0));
-                int maxTemp = Integer.parseInt(data.get(1));
-                int minTemp = Integer.parseInt(data.get(2));
-                processedObjects.add(new Weather(day, maxTemp, minTemp));
-            }
         }
     }
 
